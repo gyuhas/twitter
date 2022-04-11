@@ -1,63 +1,30 @@
 <template>
   <div id="app">
     Welcome please enter a twitter handle: 
-    <input v-model="handle"/>
-    <button @click="showTaggedTweets(handle)">Done</button>
+    <input type="text" :value="name"/>
+    <button @click="getUserId(name)">Done</button>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-const needle = require('needle');
+import { Mixin } from './mixin/apis';
+import user from './data/user';
 
 @Component({
     components: {
-
     },
-    data: {
-      return: {
-        handle: String,
+    data() {
+      return {
+        name: 'lululemon'
       }
     }
 })
 
-const token = 'AAAAAAAAAAAAAAAAAAAAAOxobQEAAAAAZUxYpOwCP%2BqWidJsmXF7ACo093E%3Do6qQP3PwDk69qNRKvswKKjVLxqpZIocnnI4Obw8D3x4i377Dwu';
-const xhr = new XMLHttpRequest();
 
 export default class App extends Vue {
- async showTaggedTweets(handle: string) {
-      const endpointURL = `https://api.twitter.com/2/users/by/username/${handle}`;
-   fetch(endpointURL, {
-  // body: JSON.stringify(dataToPost),
-  mode: 'cors',
-  headers: new Headers({
-    'Content-Type': 'application/json',
-    "Authorization": `Bearer ${token}`,
-  })
-})
-.then(response => response.json())
-.then(json => console.log('Response', json))
-debugger; // eslint-disable-line no-debugger
-  //   debugger; // eslint-disable-line no-debugger
-  // //  const params = {
-  // //       "user.fields": "created_at,description", // Edit optional query parameters here
-  // //       "expansions": "pinned_tweet_id",
-  // //   }
-  //   const res = await needle('get', endpointURL, {
-  //       headers: {
-  //           "Authorization": `Bearer ${token}`,
-  //           'Content-Type': 'application/json',
-  //           'Access-Control-Allow-Origin': 'http://localhost:8080/',
-  //           "Access-Control-Allow-Methods": "DELETE, POST, GET, OPTIONS",
-  //           "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With, X-Auth-Token, Origin"
-  //       }
-  //   })
-  //   debugger; // eslint-disable-line no-debugger
-  //   if (res.body) {
-  //       return res.body;
-  //   } else {
-  //       throw new Error('Unsuccessful request')
-  //   }
+ async getUserId(handle: string) {
+   this.$store.dispatch('GET_USER_ID', handle);
 }
 }
 </script>
